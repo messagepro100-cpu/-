@@ -11,7 +11,7 @@
   <main class="container">
     <section id="estimate" class="estimate" aria-labelledby="estimate-title">
       <h1 id="estimate-title"><span class="screen-only">Смета за 5 минут</span><span id="print-title" class="print-only">Смета</span></h1>
-      <p class="screen-only">Добавьте позиции — суммы посчитаются сразу. Используйте вымышленные данные: ничего не отправляется и не сохраняется.</p>
+      <p class="screen-only">Добавьте позиции — суммы посчитаются сразу. Используйте вымышленные данные: черновик сохраняется только в этом браузере, ничего не отправляется.</p>
 
       <div class="estimate-card">
         <h2>Реквизиты</h2>
@@ -63,7 +63,18 @@
       </div>
       <p class="print-only signature">Подпись ____________________</p>
       <div class="screen-only">
-        <button id="save-pdf" class="button" type="button">Сохранить PDF</button>
+        <div class="estimate-actions">
+          <button id="save-pdf" class="button" type="button">Сохранить PDF</button>
+          <button id="copy-whatsapp" class="button" type="button">Скопировать для WhatsApp</button>
+          <button id="new-estimate" class="button button-secondary" type="button">Новая смета</button>
+        </div>
+        <p id="draft-status" class="settings-hint" role="status">Изменения автоматически сохраняются в этом браузере.</p>
+        <p id="copy-status" class="settings-hint" role="status" aria-live="polite"></p>
+        <div id="manual-copy" hidden>
+          <label for="copy-text">Текст сметы для ручного копирования</label>
+          <textarea id="copy-text" rows="10" readonly aria-describedby="manual-copy-hint"></textarea>
+          <p id="manual-copy-hint" class="settings-hint">Текст выделен. Нажмите Ctrl+C или выберите «Копировать» в меню поля.</p>
+        </div>
         <p class="settings-hint">В окне печати выберите «Сохранить как PDF». Если браузер добавляет адрес и номера страниц, отключите «Колонтитулы».</p>
       </div>
       <noscript>Для автоматического расчёта сметы включите JavaScript в браузере.</noscript>

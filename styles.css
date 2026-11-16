@@ -473,3 +473,29 @@ textarea:focus-visible {
     color: #000;
   }
 }
+
+/* Кнопки и сообщения черновика находятся в блоке screen-only и не печатаются. */
+.estimate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button-secondary {
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+}
+
+.button-secondary:hover {
+  background: var(--accent-soft);
+}
+
+#manual-copy:not([hidden]) {
+  margin-top: 20px;
+}
+
+#copy-text {
+  min-height: 220px;
+}
+
