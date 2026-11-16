@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Смета за 5 минут</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <section id="estimate" class="estimate" aria-labelledby="estimate-title">
+      <h1 id="estimate-title">Смета за 5 минут</h1>
+      <p>Добавьте позиции — суммы посчитаются сразу. Используйте вымышленные данные: ничего не отправляется и не сохраняется.</p>
+
+      <div class="estimate-card">
+        <h2>Реквизиты</h2>
+        <div class="estimate-details">
+          <label>От кого<input type="text" id="estimate-from" placeholder="Например: Студия ALMA" autocomplete="off"></label>
+          <label>Для кого<input type="text" id="estimate-to" placeholder="Например: Учебный заказчик" autocomplete="off"></label>
+          <label>Номер сметы<input type="text" id="estimate-number" placeholder="Например: 001" autocomplete="off"></label>
+          <label>Дата<input type="date" id="estimate-date"></label>
+        </div>
+      </div>
+
+      <div class="estimate-card">
+        <h2 id="items-title">Позиции</h2>
+        <table class="estimate-table" aria-labelledby="items-title">
+          <thead>
+            <tr>
+              <th scope="col">Наименование</th>
+              <th scope="col">Количество</th>
+              <th scope="col">Единица</th>
+              <th scope="col">Цена, ₸</th>
+              <th scope="col">Сумма, ₸</th>
+              <th scope="col"><span class="visually-hidden">Удаление</span></th>
+            </tr>
+          </thead>
+          <tbody id="estimate-items"></tbody>
+        </table>
+        <button id="add-item" class="button" type="button">+ Добавить позицию</button>
+      </div>
+
+      <div class="estimate-total" role="status" aria-live="polite" aria-atomic="true">
+        <span>Итого к оплате</span>
+        <output id="estimate-total">0 ₸</output>
+      </div>
+      <noscript>Для автоматического расчёта сметы включите JavaScript в браузере.</noscript>
+    </section>
+
+    <template id="estimate-row-template">
+      <tr>
+        <td><label><span class="item-label">Наименование</span><input class="item-name" type="text" placeholder="Название работы" autocomplete="off"></label></td>
+        <td><label><span class="item-label">Количество</span><input class="item-quantity" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label></td>
+        <td><label><span class="item-label">Единица</span><select class="item-unit"><option>шт</option><option>час</option><option>услуга</option></select></label></td>
+        <td><label><span class="item-label">Цена, ₸</span><input class="item-price" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label></td>
+        <td class="item-sum-cell"><span class="item-label">Сумма, ₸</span><output class="item-sum" aria-label="Сумма строки">0 ₸</output></td>
+        <td class="item-remove-cell"><button class="item-remove" type="button" aria-label="Удалить позицию">✕</button></td>
+      </tr>
+    </template>
+
+  </main>
+</body>
+</html>
