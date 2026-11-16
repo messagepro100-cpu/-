@@ -3,7 +3,10 @@ const estimateItems = document.getElementById('estimate-items');
 const rowTemplate = document.getElementById('estimate-row-template');
 const addItemButton = document.getElementById('add-item');
 const estimateTotal = document.getElementById('estimate-total');
-const moneyFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
+const discountInput = document.getElementById('estimate-discount');
+const vatInput = document.getElementById('estimate-vat');
+const currencyInput = document.getElementById('estimate-currency');
+const moneyFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 
 // Поддерживаем десятичную запятую и пробелы в записи «15 000».
 function readNumber(value) {
@@ -14,12 +17,12 @@ function readNumber(value) {
 }
 
 function roundMoney(value) {
-  const rounded = Math.round((value + Number.EPSILON) * 100) / 100;
+  const rounded = Math.round(value);
   return Number.isFinite(rounded) ? rounded : 0;
 }
 
 function formatMoney(value) {
-  return `${moneyFormat.format(value)} ₸`;
+  return `${moneyFormat.format(value)} ${currencyInput.value}`;
 }
 
 function updateEstimate() {
@@ -31,7 +34,26 @@ function updateEstimate() {
     row.querySelector('.item-sum').textContent = formatMoney(sum);
     total = roundMoney(total + sum);
   }
-  estimateTotal.textContent = formatMoney(total);
+  // Сначала скидка от суммы позиций, затем НДС от суммы со скидкой.
+  const discountRate = Math.min(100, readNumber(discountInput.value));
+  const vatRate = readNumber(vatInput.value);
+  const discount = roundMoney(total * (discountRate / 100));
+  const discounted = roundMoney(total - discount);
+  const vat = roundMoney(discounted * (vatRate / 100));
+
+  document.getElementById('estimate-subtotal').textContent = formatMoney(total);
+  document.getElementById('discount-amount').textContent = formatMoney(discount);
+  document.getElementById('discounted-amount').textContent = formatMoney(discounted);
+  document.getElementById('vat-amount').textContent = formatMoney(vat);
+  document.getElementById('discount-row').hidden = discount === 0;
+  document.getElementById('discounted-row').hidden = discounted === 0;
+  document.getElementById('vat-row').hidden = vat === 0;
+  estimateTotal.textContent = formatMoney(roundMoney(discounted + vat));
+
+  // Меняем знак и в заголовках таблицы, и в подписях мобильных карточек.
+  document.querySelectorAll('[data-currency]').forEach((label) => {
+    label.textContent = currencyInput.value;
+  });
 }
 
 function addEstimateRow(focus = true) {
@@ -44,6 +66,12 @@ function addEstimateRow(focus = true) {
 
 addItemButton.addEventListener('click', () => addEstimateRow());
 estimateItems.addEventListener('input', updateEstimate);
+discountInput.addEventListener('input', () => {
+  if (readNumber(discountInput.value) > 100) discountInput.value = '100';
+  updateEstimate();
+});
+vatInput.addEventListener('input', updateEstimate);
+currencyInput.addEventListener('change', updateEstimate);
 
 estimateItems.addEventListener('click', (event) => {
   const removeButton = event.target.closest('.item-remove');

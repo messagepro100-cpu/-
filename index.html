@@ -31,19 +31,31 @@
               <th scope="col">Наименование</th>
               <th scope="col">Количество</th>
               <th scope="col">Единица</th>
-              <th scope="col">Цена, ₸</th>
-              <th scope="col">Сумма, ₸</th>
+              <th scope="col">Цена, <span data-currency>₸</span></th>
+              <th scope="col">Сумма, <span data-currency>₸</span></th>
               <th scope="col"><span class="visually-hidden">Удаление</span></th>
             </tr>
           </thead>
           <tbody id="estimate-items"></tbody>
         </table>
         <button id="add-item" class="button" type="button">+ Добавить позицию</button>
+        <div class="estimate-settings">
+          <label>Скидка, %<input id="estimate-discount" type="text" inputmode="decimal" value="0" autocomplete="off" aria-describedby="discount-hint"></label>
+          <label>НДС, %<input id="estimate-vat" type="text" inputmode="decimal" value="0" autocomplete="off"></label>
+          <label>Валюта<select id="estimate-currency" aria-describedby="currency-hint"><option value="₸">₸</option><option value="₽">₽</option><option value="$">$</option><option value="€">€</option></select></label>
+        </div>
+        <p id="discount-hint" class="settings-hint">Скидка — от 0 до 100%.</p>
+        <p id="currency-hint" class="settings-hint">Валюта меняет обозначение сумм, без пересчёта по курсу.</p>
       </div>
 
-      <div class="estimate-total" role="status" aria-live="polite" aria-atomic="true">
-        <span>Итого к оплате</span>
-        <output id="estimate-total">0 ₸</output>
+      <div class="estimate-card estimate-summary" role="status" aria-live="polite" aria-atomic="true">
+        <dl class="estimate-breakdown">
+          <div class="summary-row"><dt>Сумма</dt><dd><output id="estimate-subtotal">0 ₸</output></dd></div>
+          <div id="discount-row" class="summary-row" hidden><dt>Скидка</dt><dd><output id="discount-amount">0 ₸</output></dd></div>
+          <div id="discounted-row" class="summary-row" hidden><dt>Сумма со скидкой</dt><dd><output id="discounted-amount">0 ₸</output></dd></div>
+          <div id="vat-row" class="summary-row" hidden><dt>НДС</dt><dd><output id="vat-amount">0 ₸</output></dd></div>
+          <div class="estimate-total"><dt>Итого к оплате</dt><dd><output id="estimate-total">0 ₸</output></dd></div>
+        </dl>
       </div>
       <noscript>Для автоматического расчёта сметы включите JavaScript в браузере.</noscript>
     </section>
@@ -53,8 +65,8 @@
         <td><label><span class="item-label">Наименование</span><input class="item-name" type="text" placeholder="Название работы" autocomplete="off"></label></td>
         <td><label><span class="item-label">Количество</span><input class="item-quantity" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label></td>
         <td><label><span class="item-label">Единица</span><select class="item-unit"><option>шт</option><option>час</option><option>услуга</option></select></label></td>
-        <td><label><span class="item-label">Цена, ₸</span><input class="item-price" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label></td>
-        <td class="item-sum-cell"><span class="item-label">Сумма, ₸</span><output class="item-sum" aria-label="Сумма строки">0 ₸</output></td>
+        <td><label><span class="item-label">Цена, <span data-currency>₸</span></span><input class="item-price" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></label></td>
+        <td class="item-sum-cell"><span class="item-label">Сумма, <span data-currency>₸</span></span><output class="item-sum" aria-label="Сумма строки">0 ₸</output></td>
         <td class="item-remove-cell"><button class="item-remove" type="button" aria-label="Удалить позицию">✕</button></td>
       </tr>
     </template>
