@@ -103,3 +103,27 @@ document.getElementById('estimate-date').value = [
   String(today.getDate()).padStart(2, '0')
 ].join('-');
 addEstimateRow(false);
+
+// Перед печатью создаём обычный текст вместо полей: длинные значения не обрежутся.
+function prepareEstimatePrint() {
+  updateEstimate();
+  const number = document.getElementById('estimate-number').value.trim() || '—';
+  const date = document.getElementById('estimate-date').value;
+  const printDate = date ? date.split('-').reverse().join('.') : '—';
+  document.getElementById('print-title').textContent = `Смета № ${number} от ${printDate}`;
+
+  document.querySelectorAll('.print-value').forEach((value) => value.remove());
+  document.querySelectorAll('.estimate-details input, #estimate-items input, #estimate-items select, #estimate-comment').forEach((field) => {
+    const value = document.createElement('span');
+    value.className = 'print-only print-value';
+    value.textContent = (field.type === 'date' ? printDate : field.value.trim()) || '—';
+    field.insertAdjacentElement('afterend', value);
+  });
+}
+
+// beforeprint работает и при нажатии Ctrl+P, и при печати через меню браузера.
+window.addEventListener('beforeprint', prepareEstimatePrint);
+document.getElementById('save-pdf').addEventListener('click', () => {
+  prepareEstimatePrint();
+  window.print();
+});

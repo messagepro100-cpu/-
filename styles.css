@@ -184,7 +184,7 @@ select:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
   .estimate-card {
     padding: 16px;
   }
@@ -288,4 +288,188 @@ select:focus-visible {
   padding: 16px;
   border: 0;
   background: var(--accent-soft);
+}
+
+/* Значения для печати не видны на экране. */
+.print-only {
+  display: none;
+}
+
+.estimate textarea {
+  display: block;
+  width: 100%;
+  min-height: 110px;
+  margin-top: 6px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+textarea:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 15mm;
+}
+
+@media print {
+  html,
+  body {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+    font: 10pt/1.35 Arial, sans-serif;
+  }
+
+  .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  button,
+  .screen-only,
+  .estimate-settings,
+  .settings-hint,
+  .item-remove-cell,
+  .estimate-table th:last-child,
+  .estimate input,
+  .estimate select,
+  .estimate textarea,
+  .estimate-table .item-label,
+  noscript {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  .print-value {
+    min-height: 1em;
+    margin-top: 2mm;
+    color: #000;
+    font-weight: 400;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .estimate h1 {
+    margin: 0 0 7mm;
+    font: bold 20pt/1.2 Arial, sans-serif;
+  }
+
+  .estimate h2 {
+    margin: 0 0 3mm;
+    font: bold 12pt/1.2 Arial, sans-serif;
+  }
+
+  .estimate-card {
+    margin: 0 0 6mm;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .estimate-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3mm 8mm;
+    break-inside: avoid;
+  }
+
+  .estimate label {
+    color: #000;
+    font-size: 10pt;
+  }
+
+  .estimate-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .estimate-table thead {
+    display: table-header-group;
+  }
+
+  .estimate-table th,
+  .estimate-table td {
+    padding: 2mm;
+    border: 1px solid #555;
+    color: #000;
+    font-size: 9pt;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+
+  .estimate-table th:first-child {
+    width: 40%;
+  }
+
+  .estimate-table th:nth-child(2),
+  .estimate-table th:nth-child(3) {
+    width: 13%;
+  }
+
+  .estimate-table th:nth-child(4),
+  .estimate-table th:nth-child(5) {
+    width: 17%;
+  }
+
+  .estimate-table tr {
+    break-inside: avoid;
+  }
+
+  .estimate-table .print-value {
+    margin: 0;
+  }
+
+  .estimate-summary {
+    width: 80mm;
+    max-width: 100%;
+    margin-left: auto;
+    break-inside: avoid;
+  }
+
+  .summary-row {
+    gap: 2mm 5mm;
+    padding-block: 1mm;
+  }
+
+  .estimate-summary .estimate-total {
+    margin-top: 2mm;
+    padding: 2mm 0 0;
+    gap: 2mm 5mm;
+    border-top: 1px solid #000;
+    border-radius: 0;
+    background: transparent;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  #estimate-total {
+    font-size: 14pt;
+  }
+
+  .estimate-comment-card,
+  .signature {
+    break-inside: avoid;
+  }
+
+  .signature {
+    margin: 8mm 0 0;
+    color: #000;
+  }
 }

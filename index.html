@@ -10,8 +10,8 @@
 <body>
   <main class="container">
     <section id="estimate" class="estimate" aria-labelledby="estimate-title">
-      <h1 id="estimate-title">Смета за 5 минут</h1>
-      <p>Добавьте позиции — суммы посчитаются сразу. Используйте вымышленные данные: ничего не отправляется и не сохраняется.</p>
+      <h1 id="estimate-title"><span class="screen-only">Смета за 5 минут</span><span id="print-title" class="print-only">Смета</span></h1>
+      <p class="screen-only">Добавьте позиции — суммы посчитаются сразу. Используйте вымышленные данные: ничего не отправляется и не сохраняется.</p>
 
       <div class="estimate-card">
         <h2>Реквизиты</h2>
@@ -56,6 +56,15 @@
           <div id="vat-row" class="summary-row" hidden><dt>НДС</dt><dd><output id="vat-amount">0 ₸</output></dd></div>
           <div class="estimate-total"><dt>Итого к оплате</dt><dd><output id="estimate-total">0 ₸</output></dd></div>
         </dl>
+      </div>
+      <div class="estimate-card estimate-comment-card">
+        <label for="estimate-comment">Комментарий</label>
+        <textarea id="estimate-comment" rows="4" placeholder="Сроки выполнения, условия оплаты" autocomplete="off"></textarea>
+      </div>
+      <p class="print-only signature">Подпись ____________________</p>
+      <div class="screen-only">
+        <button id="save-pdf" class="button" type="button">Сохранить PDF</button>
+        <p class="settings-hint">В окне печати выберите «Сохранить как PDF». Если браузер добавляет адрес и номера страниц, отключите «Колонтитулы».</p>
       </div>
       <noscript>Для автоматического расчёта сметы включите JavaScript в браузере.</noscript>
     </section>
