@@ -1,22 +1,45 @@
 :root {
   color-scheme: light;
-  --background: #f0f7ef;
+  --background: #F4F6F8;
   --surface: #ffffff;
-  --text: #203b30;
-  --muted: #50685b;
-  --accent: #176447;
-  --accent-dark: #104a34;
-  --accent-soft: #dceee1;
-  --border: #ccdfcf;
+  --text: #1E293B;
+  --muted: #475569;
+  --accent: #1B2A4A;
+  --accent-dark: #0F1E36;
+  --accent-soft: #E2E8F0;
+  --green: #1E4D3B;
+  --green-dark: #163A2C;
+  --green-soft: #EDF3F0;
+  --border: #E2E8F0;
 }
 * { box-sizing: border-box; }
 body {
+  isolation: isolate;
   margin: 0;
   min-height: 100vh;
   background: var(--background);
   color: var(--text);
   font-family: "Segoe UI", Arial, sans-serif;
   line-height: 1.6;
+}
+.technical-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.estimate-header {
+  padding: 28px 32px;
+  border: 1px solid var(--accent-dark);
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+}
+.estimate-header p {
+  max-width: 78ch;
+  margin: 0;
+  color: #E2E8F0;
 }
 .container {
   width: calc(100% - 32px);
@@ -31,7 +54,7 @@ button, input, select { font: inherit; }
 .button {
   padding: 12px 20px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 4px;
   background: var(--accent);
   color: #fff;
   font-weight: 600;
@@ -44,7 +67,7 @@ button:focus-visible, input:focus-visible, select:focus-visible {
 }
 .estimate h1,
 .estimate h2 {
-  font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   font-weight: 700;
 }
 
@@ -52,8 +75,13 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   margin-block: 24px;
   padding: 24px;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 6px;
   background: var(--surface);
+}
+.estimate h2 {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
 }
 
 .estimate-details {
@@ -77,7 +105,7 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   margin-top: 6px;
   padding: 10px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
   color: var(--text);
   font: inherit;
@@ -107,7 +135,8 @@ select:focus-visible {
 }
 
 .estimate-table th {
-  color: var(--muted);
+  background: var(--background);
+  color: var(--accent);
   font-size: 0.8rem;
   text-align: left;
 }
@@ -115,7 +144,7 @@ select:focus-visible {
 .estimate-table th,
 .estimate-table td {
   padding: 12px 6px;
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
   vertical-align: middle;
 }
 
@@ -130,6 +159,32 @@ select:focus-visible {
 .estimate-table input,
 .estimate-table select {
   margin-top: 0;
+}
+
+.estimate-table th:nth-child(2),
+.estimate-table th:nth-child(4),
+.estimate-table th:nth-child(5),
+.estimate-table td:nth-child(2),
+.estimate-table td:nth-child(4),
+.item-sum-cell,
+.estimate input[inputmode],
+.estimate-breakdown dd {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.estimate-breakdown dd {
+  margin-left: auto;
+}
+
+#save-pdf,
+#copy-whatsapp {
+  background: var(--green);
+}
+
+#save-pdf:hover,
+#copy-whatsapp:hover {
+  background: var(--green-dark);
 }
 
 .visually-hidden,
@@ -152,7 +207,7 @@ select:focus-visible {
 
 .item-remove {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
   color: var(--accent);
   cursor: pointer;
@@ -170,9 +225,9 @@ select:focus-visible {
   gap: 12px 24px;
   padding: 24px;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 4px;
   background: #fff;
-  color: var(--accent-dark);
+  color: var(--green-dark);
   font-size: 1.3rem;
   font-weight: 700;
 }
@@ -185,6 +240,10 @@ select:focus-visible {
 }
 
 @media screen and (max-width: 640px) {
+  .estimate-header {
+    padding: 20px 16px;
+  }
+
   .estimate-card {
     padding: 16px;
   }
@@ -213,7 +272,8 @@ select:focus-visible {
     margin-bottom: 16px;
     padding: 16px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 4px;
+    background: var(--background);
   }
 
   .estimate-table td {
@@ -238,6 +298,7 @@ select:focus-visible {
     white-space: normal;
     color: var(--muted);
     font-size: 0.8rem;
+    text-align: left;
   }
 
   .item-remove-cell {
@@ -273,7 +334,7 @@ select:focus-visible {
   width: 44px;
   height: 44px;
   margin: 0;
-  accent-color: var(--accent);
+  accent-color: var(--green);
 }
 
 #trip-days:disabled {
@@ -301,6 +362,7 @@ select:focus-visible {
   justify-content: space-between;
   gap: 8px 20px;
   padding-block: 10px;
+  border-bottom: 1px solid var(--border);
 }
 
 .estimate-summary [hidden] {
@@ -317,8 +379,8 @@ select:focus-visible {
 .estimate-summary .estimate-total {
   margin-top: 16px;
   padding: 16px;
-  border: 0;
-  background: var(--accent-soft);
+  border: 1px solid var(--green);
+  background: var(--green-soft);
 }
 
 /* Значения для печати не видны на экране. */
@@ -333,7 +395,7 @@ select:focus-visible {
   margin-top: 6px;
   padding: 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
   color: var(--text);
   font: inherit;
@@ -351,6 +413,19 @@ textarea:focus-visible {
 }
 
 @media print {
+  .estimate-header {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #000;
+  }
+
+  .estimate h2 {
+    padding: 0;
+    border: 0;
+    color: #000;
+  }
+
   html,
   body {
     min-height: 0;

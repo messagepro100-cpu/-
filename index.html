@@ -8,10 +8,55 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+  <svg class="technical-background screen-only" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="100%" height="100%">
+    <defs>
+      <pattern id="elevator-blueprint" width="760" height="660" patternUnits="userSpaceOnUse">
+        <g fill="none" stroke="#1B2A4A" stroke-width="1.4" stroke-linejoin="round">
+          <!-- Лифтовая лебёдка: двигатель, редуктор, тяговый шкив. -->
+          <g transform="translate(42 54)">
+            <path d="M0 112h252v12H0zM20 40h96v62H20zM116 54h34v35h-34M25 102v10m82-10v10"/>
+            <path d="M32 46v50m12-50v50m12-50v50m12-50v50m12-50v50m12-50v50M5 57h15v28H5z"/>
+            <circle cx="191" cy="65" r="44"/><circle cx="191" cy="65" r="36"/><circle cx="191" cy="65" r="12"/>
+            <path d="M180 56l-17-18m37 18l18-18m-37 36l-18 18m37-18l18 18M165 101l-6 11m58-11l6 11"/>
+          </g>
+          <!-- Шкив и стальные канаты. -->
+          <g transform="translate(470 42)">
+            <circle cx="78" cy="70" r="55"/><circle cx="78" cy="70" r="47"/><circle cx="78" cy="70" r="17"/>
+            <path d="M78 23v30m0 34v30M31 70h30m34 0h30M44 36l22 22m24 24l22 22M44 104l22-22m24-24l22-22M23 70v160m8-131v131m94-131v131m8-160v160"/>
+            <path d="M20 145l14 14m-14 9l14 14m-14 9l14 14m88-60l14 14m-14 9l14 14m-14 9l14 14"/>
+          </g>
+          <!-- Направляющий башмак и профиль направляющей. -->
+          <g transform="translate(52 310)">
+            <path d="M0 22h112v76H0zM14 37h84v46H14zM39 37v30h34V37M49 0h14v55H49zM31 0h50M22 98v15m68-15v15"/>
+            <circle cx="10" cy="30" r="3"/><circle cx="102" cy="30" r="3"/><circle cx="10" cy="90" r="3"/><circle cx="102" cy="90" r="3"/>
+          </g>
+          <!-- Противовес с наборными грузами. -->
+          <g transform="translate(267 284)">
+            <path d="M0 0h108v190H0zM10 12h88v166H10zM48-32v32m12-32v32M-9 26H0m108 0h9M-9 164H0m108 0h9"/>
+            <path d="M15 24h78v22H15zM15 52h78v22H15zM15 80h78v22H15zM15 108h78v22H15zM15 136h78v22H15z"/>
+          </g>
+          <!-- Плата управления с микросхемой, дорожками и клеммами. -->
+          <g transform="translate(474 366)">
+            <rect width="200" height="142" rx="3"/><rect x="67" y="40" width="58" height="55"/>
+            <path d="M76 31v9m12-9v9m12-9v9m12-9v9M76 95v9m12-9v9m12-9v9m12-9v9M58 49h9m-9 14h9m-9 14h9m-9 13h9m58-41h9m-9 14h9m-9 14h9m-9 13h9M58 49H35V24H20M58 77H27v39h21m86-53h22V26h22m-44 64h27v26h17M88 104v21h38"/>
+            <path d="M14 10h34v10H14zM145 10h38v10h-38zM14 124h23v9H14zM155 124h28v9h-28z"/>
+            <circle cx="9" cy="9" r="3"/><circle cx="191" cy="9" r="3"/><circle cx="9" cy="133" r="3"/><circle cx="191" cy="133" r="3"/>
+          </g>
+          <g stroke-width="0.7" stroke-dasharray="6 6">
+            <path d="M24 205h296M24 195v20m296-20v20M444 20h220M454 10v270M22 464h160M235 270v218M440 541h267M33 588h665M385 255h300"/>
+          </g>
+          <g stroke-width="0.7"><path d="M32 30h16m-8-8v16M714 302h16m-8-8v16M190 545h16m-8-8v16"/></g>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#elevator-blueprint)"/>
+  </svg>
   <main class="container">
     <section id="estimate" class="estimate" aria-labelledby="estimate-title">
+      <header class="estimate-header">
       <h1 id="estimate-title"><span class="screen-only">Смета за 5 минут</span><span id="print-title" class="print-only">Смета</span></h1>
       <p class="screen-only">Добавьте позиции — суммы посчитаются сразу. Используйте вымышленные данные: черновик сохраняется только в этом браузере, ничего не отправляется.</p>
+      </header>
 
       <div class="estimate-card">
         <h2>Реквизиты</h2>
