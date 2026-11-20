@@ -48,30 +48,13 @@
         <p id="currency-hint" class="settings-hint">Валюта меняет обозначение сумм, без пересчёта по курсу.</p>
       </div>
 
-      <div class="estimate-card screen-only" id="business-trip">
-        <h2>Командировочные расходы</h2>
-        <label class="trip-toggle"><input id="trip-enabled" type="checkbox" aria-controls="trip-fields">Командировка за пределы Астаны</label>
-        <fieldset id="trip-fields" class="trip-fields" disabled>
-          <legend class="visually-hidden">Параметры командировки</legend>
-          <div class="estimate-settings">
-            <label>Количество дней<input id="trip-days" type="text" inputmode="numeric" value="0" autocomplete="off" aria-describedby="trip-hint"></label>
-            <label>Суточные за день, <span data-currency>₸</span><input id="trip-daily" type="text" inputmode="decimal" value="0" autocomplete="off"></label>
-            <label>Проезд за всю поездку, <span data-currency>₸</span><input id="trip-transport" type="text" inputmode="decimal" value="0" autocomplete="off"></label>
-            <label>Проживание за всю поездку, <span data-currency>₸</span><input id="trip-lodging" type="text" inputmode="decimal" value="0" autocomplete="off"></label>
-          </div>
-        </fieldset>
-        <p id="trip-hint" class="settings-hint">Расходы = дни × суточные + проезд + проживание. Дни — целое неотрицательное число; пустые, отрицательные и неверные значения считаются нулём. При нуле дней учитываются только проезд и проживание. Командировочные добавляются после скидки и НДС, без изменения их расчёта. При отключении значения сохраняются, расходы не учитываются.</p>
-      </div>
-
       <div class="estimate-card estimate-summary" role="status" aria-live="polite" aria-atomic="true">
         <dl class="estimate-breakdown">
           <div class="summary-row"><dt>Сумма</dt><dd><output id="estimate-subtotal">0 ₸</output></dd></div>
           <div id="discount-row" class="summary-row" hidden><dt>Скидка</dt><dd><output id="discount-amount">0 ₸</output></dd></div>
           <div id="discounted-row" class="summary-row" hidden><dt>Сумма со скидкой</dt><dd><output id="discounted-amount">0 ₸</output></dd></div>
           <div id="vat-row" class="summary-row" hidden><dt>НДС</dt><dd><output id="vat-amount">0 ₸</output></dd></div>
-          <div id="trip-row" class="summary-row" hidden><dt>Командировочные за пределы Астаны</dt><dd><output id="trip-amount">0 ₸</output></dd></div>
           <div class="estimate-total"><dt>Итого к оплате</dt><dd><output id="estimate-total">0 ₸</output></dd></div>
-          <div id="amount-in-words-row" class="amount-in-words" hidden><dt>Сумма прописью:</dt><dd><output id="amount-in-words"></output></dd></div>
         </dl>
       </div>
       <div class="estimate-card estimate-comment-card">

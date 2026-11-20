@@ -7,9 +7,6 @@ const estimateTotal = document.getElementById('estimate-total');
 const discountInput = document.getElementById('estimate-discount');
 const vatInput = document.getElementById('estimate-vat');
 const currencyInput = document.getElementById('estimate-currency');
-const tripEnabled = document.getElementById('trip-enabled');
-const tripFields = document.getElementById('trip-fields');
-const tripFieldIds = ['trip-days', 'trip-daily', 'trip-transport', 'trip-lodging'];
 const moneyFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 
 // Поддерживаем десятичную запятую и пробелы в записи «15 000».
@@ -29,50 +26,6 @@ function formatMoney(value) {
   return `${moneyFormat.format(value)} ${currencyInput.value}`;
 }
 
-function calculateTripExpenses() {
-  if (!tripEnabled.checked) return 0;
-  const days = readNumber(document.getElementById('trip-days').value);
-  const daily = readNumber(document.getElementById('trip-daily').value);
-  const transport = readNumber(document.getElementById('trip-transport').value);
-  const lodging = readNumber(document.getElementById('trip-lodging').value);
-  const allowance = Number.isInteger(days) ? roundMoney(days * daily) : 0;
-  return roundMoney(allowance + roundMoney(transport) + roundMoney(lodging));
-}
-
-// Прописью дублируем только целый итог в тенге в поддерживаемом диапазоне.
-function tengeInWords(value) {
-  if (!Number.isInteger(value) || value < 1 || value > 999999999) return '';
-  const units = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
-  const teens = ['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
-  const tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
-  const hundreds = ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
-  const words = [];
-  for (const [scale, forms, feminine] of [
-    [1000000, ['миллион', 'миллиона', 'миллионов'], false],
-    [1000, ['тысяча', 'тысячи', 'тысяч'], true],
-    [1, null, false]
-  ]) {
-    const group = Math.floor(value / scale) % 1000;
-    if (!group) continue;
-    const lastTwo = group % 100;
-    const last = group % 10;
-    if (group >= 100) words.push(hundreds[Math.floor(group / 100)]);
-    if (lastTwo >= 10 && lastTwo <= 19) {
-      words.push(teens[lastTwo - 10]);
-    } else {
-      if (lastTwo >= 20) words.push(tens[Math.floor(lastTwo / 10)]);
-      if (last) words.push(feminine && last <= 2 ? ['', 'одна', 'две'][last] : units[last]);
-    }
-    if (forms) {
-      const form = lastTwo >= 11 && lastTwo <= 14 ? 2 : last === 1 ? 0 : last >= 2 && last <= 4 ? 1 : 2;
-      words.push(forms[form]);
-    }
-  }
-  words.push('тенге');
-  const text = words.join(' ');
-  return text[0].toUpperCase() + text.slice(1);
-}
-
 function updateEstimate() {
   let total = 0;
   for (const row of estimateItems.rows) {
@@ -88,11 +41,6 @@ function updateEstimate() {
   const discount = roundMoney(total * (discountRate / 100));
   const discounted = roundMoney(total - discount);
   const vat = roundMoney(discounted * (vatRate / 100));
-  const tripExpenses = calculateTripExpenses();
-  const payable = roundMoney(discounted + vat + tripExpenses);
-  tripFields.disabled = !tripEnabled.checked;
-  document.getElementById('trip-row').hidden = !tripEnabled.checked;
-  document.getElementById('trip-amount').textContent = formatMoney(tripExpenses);
 
   document.getElementById('estimate-subtotal').textContent = formatMoney(total);
   document.getElementById('discount-amount').textContent = formatMoney(discount);
@@ -101,10 +49,7 @@ function updateEstimate() {
   document.getElementById('discount-row').hidden = discount === 0;
   document.getElementById('discounted-row').hidden = discounted === 0;
   document.getElementById('vat-row').hidden = vat === 0;
-  estimateTotal.textContent = formatMoney(payable);
-  const words = currencyInput.value === '₸' ? tengeInWords(payable) : '';
-  document.getElementById('amount-in-words').textContent = words;
-  document.getElementById('amount-in-words-row').hidden = !words;
+  estimateTotal.textContent = formatMoney(roundMoney(discounted + vat));
 
   // Меняем знак и в заголовках таблицы, и в подписях мобильных карточек.
   document.querySelectorAll('[data-currency]').forEach((label) => {
@@ -129,8 +74,6 @@ discountInput.addEventListener('input', () => {
 });
 vatInput.addEventListener('input', updateEstimate);
 currencyInput.addEventListener('change', updateEstimate);
-tripEnabled.addEventListener('change', updateEstimate);
-tripFields.addEventListener('input', updateEstimate);
 
 estimateItems.addEventListener('click', (event) => {
   const removeButton = event.target.closest('.item-remove');
@@ -204,10 +147,6 @@ function collectEstimateDraft() {
   return {
     version: 1,
     fields: Object.fromEntries(draftFieldIds.map((id) => [id, document.getElementById(id).value])),
-    trip: {
-      enabled: tripEnabled.checked,
-      fields: Object.fromEntries(tripFieldIds.map((id) => [id, document.getElementById(id).value]))
-    },
     items: Array.from(estimateItems.rows, (row) => ({
       name: row.querySelector('.item-name').value,
       quantity: row.querySelector('.item-quantity').value,
@@ -239,14 +178,7 @@ function restoreEstimateDraft() {
           ['шт', 'час', 'услуга'].includes(item.unit))) {
       throw new Error('Неверный формат черновика');
     }
-    // Старые черновики без параметров командировки остаются совместимыми.
-    if (draft.trip !== undefined && (!draft.trip || typeof draft.trip.enabled !== 'boolean' ||
-        !draft.trip.fields || !tripFieldIds.every((id) => typeof draft.trip.fields[id] === 'string'))) {
-      throw new Error('Неверный формат командировки');
-    }
     for (const id of draftFieldIds) document.getElementById(id).value = draft.fields[id];
-    tripEnabled.checked = draft.trip?.enabled ?? false;
-    for (const id of tripFieldIds) document.getElementById(id).value = draft.trip?.fields[id] ?? '0';
     estimateItems.replaceChildren();
     for (const item of draft.items) {
       const row = addEstimateRow(false);
@@ -288,8 +220,6 @@ document.getElementById('new-estimate').addEventListener('click', () => {
   discountInput.value = '0';
   vatInput.value = '0';
   currencyInput.value = '₸';
-  tripEnabled.checked = false;
-  for (const id of tripFieldIds) document.getElementById(id).value = '0';
   estimateItems.replaceChildren();
   addEstimateRow();
   document.querySelectorAll('.print-value').forEach((value) => value.remove());
@@ -328,13 +258,7 @@ function buildWhatsAppText() {
   if (!document.getElementById('vat-row').hidden) {
     lines.push(`НДС (${readNumber(vatInput.value)}%): ${document.getElementById('vat-amount').textContent}`);
   }
-  if (tripEnabled.checked) {
-    lines.push(`Командировочные за пределы Астаны: ${document.getElementById('trip-amount').textContent}`);
-  }
   lines.push(`Итого к оплате: ${estimateTotal.textContent}`);
-  if (!document.getElementById('amount-in-words-row').hidden) {
-    lines.push(`Сумма прописью: ${document.getElementById('amount-in-words').textContent}`);
-  }
   const comment = document.getElementById('estimate-comment').value.trim();
   if (comment) lines.push('', `Комментарий: ${comment}`);
   return lines.join('\n').replace(/[\u00a0\u202f]/g, ' ');

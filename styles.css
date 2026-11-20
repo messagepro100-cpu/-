@@ -259,33 +259,6 @@ select:focus-visible {
   font-size: 0.85rem;
 }
 
-.estimate .trip-toggle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 44px;
-  cursor: pointer;
-}
-
-.estimate .trip-toggle input {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  margin: 0;
-  accent-color: var(--accent);
-}
-
-.trip-fields {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.trip-fields:disabled {
-  opacity: 0.6;
-}
-
 .estimate-breakdown,
 .estimate-breakdown dd {
   margin: 0;
@@ -301,11 +274,6 @@ select:focus-visible {
 
 .estimate-summary [hidden] {
   display: none;
-}
-
-.amount-in-words {
-  margin-top: 12px;
-  overflow-wrap: anywhere;
 }
 
 .estimate-breakdown dd {
